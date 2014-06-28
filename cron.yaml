@@ -1,0 +1,4 @@
+cron:
+- description: bitcoin exchange rate data collection
+  url: /fetchrates
+  schedule: every 1 minutes synchronized
