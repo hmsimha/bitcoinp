@@ -1,6 +1,8 @@
-app live at [http://bitcoin-p.appspot.com](http://bitcoin-p.appspot.com) and (nearly) ready for production use
+api live at http://bitcoin-p.appspot.com and (nearly) ready for production use
 
-#Bitcoin with padding
+View this project's [github page](http://hmsimha.github.io/bitcoinp) for description and better demos.
+
+#bitcoinp (bitcoin with padding)
 **JSONP-enabled bitcoin conversion**
 
 A jsonp enabled api aimed at making bitcoin data from around the internet more accessible and consumable by aggregating api data from the most popular bitcoin exchanges (and platforms that 'provide bitcoin exchange services' such as coinbase) and delivering it to anyone who wants to utilize it on their static page, application, or widget without having to build a backend to do the same thing.
@@ -61,7 +63,7 @@ Examples:
 request:  
 `GET /coinbase/btc/usd?callback=myfunction`  
 response:  
-`myfunction{"btc_to_usd": 598.0746, "timestamp": 1403938400.415413}`
+`myfunction({"btc_to_usd": 598.0746, "timestamp": 1403938400.415413})`
 
 request:  
 `GET /coinbase/cad/usd`  

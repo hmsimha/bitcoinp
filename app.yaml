@@ -14,6 +14,7 @@ handlers:
   login: admin
 - url: /.*
   script: api.app
+  secure: always
 libraries:
 - name: webapp2
   version: "2.5.2"

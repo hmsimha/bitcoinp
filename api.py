@@ -17,7 +17,6 @@ PLATFORMS = {
 
 class API(webapp2.RequestHandler):
 
-
   def __init__(self, request=None, response=None):
     """
     This is nearly the same as the original webapp2 RequestHandler __init__()
@@ -82,8 +81,6 @@ class API(webapp2.RequestHandler):
       else:
         splitpath.append(splitpath[1])
         splitpath[1] = 'btc'
-    if len(splitpath) != 3:
-      splitpath = [splitpath[0], None, None]
     return splitpath
 
   def jsonpad(self, response):
@@ -99,13 +96,12 @@ class API(webapp2.RequestHandler):
     self.response.headers["Content-Type"] = "application/json"
     smartpath = self.smartpath()
     platform = self.platform = smartpath[0]
+    if platform not in PLATFORMS or len(smartpath) != 3:
+      self.abort(404)
     # get currency pair as base and quote ('quote' is preferred to 'counter')
     # see http://en.wikipedia.org/wiki/Currency_pair
     base = self.base = smartpath[1]
     quote = self.quote = smartpath[2]
-    if platform not in PLATFORMS or len(smartpath) != 3:
-      self.abort(404)
-    if not(smartpath[1] and smartpath[2]): self.response.write(memcache.get(platform)); return
     # create set of supported ISO 4217 currency codes
     # see README for more information
     fiatkeys = {str(y[0:3]) for y in memcache.get('coinbase')
