@@ -1,1 +1,137 @@
-index stub
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <title>Bitcoinp by hmsimha</title>
+
+    <link rel="stylesheet" href="stylesheets/styles.css">
+    <link rel="stylesheet" href="stylesheets/pygment_trac.css">
+    <script src="javascripts/scale.fix.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+    <div class="wrapper">
+      <header>
+        <h1 class="header">Bitcoinp</h1>
+        <p class="header">jsonp-enabled API to make bitcoin data around the net more consumable</p>
+
+        <ul>
+          <li class="download"><a class="buttons" href="https://github.com/hmsimha/bitcoinp/zipball/master">Download ZIP</a></li>
+          <li class="download"><a class="buttons" href="https://github.com/hmsimha/bitcoinp/tarball/master">Download TAR</a></li>
+          <li><a class="buttons github" href="https://github.com/hmsimha/bitcoinp">View On GitHub</a></li>
+        </ul>
+
+        <p class="header">This project is maintained by <a class="header name" href="https://github.com/hmsimha">hmsimha</a></p>
+
+
+      </header>
+      <section>
+        <p>app live at <a href="http://bitcoin-p.appspot.com">http://bitcoin-p.appspot.com</a> and (nearly) ready for production use</p>
+
+<h1>
+<a name="bitcoin-with-padding" class="anchor" href="#bitcoin-with-padding"><span class="octicon octicon-link"></span></a>Bitcoin with padding</h1>
+
+<p><strong>JSONP-enabled bitcoin conversion</strong></p>
+
+<p>A jsonp enabled api aimed at making bitcoin data from around the internet more accessible and consumable by aggregating api data from the most popular bitcoin exchanges (and platforms that 'provide bitcoin exchange services' such as coinbase) and delivering it to anyone who wants to utilize it on their static page, application, or widget without having to build a backend to do the same thing.</p>
+
+<p>For example if someone wants to simulate a storefront on their <del>geocities</del> neocities page, they can define a function to handle the price of bitcoin from their preferred exchange and in their preferred currency and invoke that function by passing it as a query parameter to the bitcoinp api with the proper request.</p>
+
+<p>One possible use would be if someone has a neocities/github/google page where they advertise a product they sell that they want displayed in btc alongside the fiat price:</p>
+
+<pre><code>My Wasabi flavored pop tarts cost ¥&lt;span id="yen"&gt;800&lt;/span&gt; yen (or &lt;span id="btc"&gt;&lt;/span&gt; BTC) each.
+
+&lt;script type="text/javascript"&gt;
+function convert(response)
+{
+  var yen = document.getElementById("yen").textContent;
+  var rate = response["jpy_to_btc"];
+  document.getElementById("btc").textContent = (rate*yen).toFixed(3);
+}
+&lt;/script&gt;
+&lt;script src="http://bitcoin-p.appspot.com/bitstamp/jpy/btc?callback=convert" type="text/javascript"&gt;&lt;/script&gt;
+</code></pre>
+
+<p>result:</p>
+
+<p><code>My Wasabi flavored pop tarts cost ¥800 yen (or 0.013 BTC) each.</code></p>
+
+<p><em><a href="http://codepen.io/anon/pen/HkfuA">see it on codepen</a></em></p>
+
+<p>Other uses would be building a full-fledged currency conversion calculator like preev.com, but with more sources, or providing a view on bitcoin prices from within a smartphone application.</p>
+
+<p>Bitcoinp provides an api for providing a quote to or from btc from any supported fiat currency (see ISO 4217 codes at bottom) from any supported exchange. If the exchange doesn't support a fiat currency directly (such as if someone wants the btc_to_usd rate from cavirtex), it uses fiat_to_fiat exchange rates provided by Coinbase's API to perform the conversion behind the scenes. If the request includes a 'callback' query parameter, the resulting response will include the JSON formatted object wrapped in the callback.</p>
+
+<p>All requests will take the form:<br>
+'/:platform/:base_currency_code/:quote_currency_code'</p>
+
+<p>where :platform is one of the following supported platforms:</p>
+
+<ul>
+<li>"coinbase"</li>
+<li>"btc-e"</li>
+<li>"bitstamp"</li>
+<li>"bitfinex"</li>
+<li>"cavirtex"</li>
+<li>"vaultofsatoshi</li>
+</ul><p>and :base_currency_code and :quote_currency_code are either 'btc' or one of the fiat currencies supported by Coinbase (see bottom for full list and details)</p>
+
+<p>Note: The two currency codes must not be the same. Also, if a platform other than coinbase is specified, one of the currencies must be 'btc'</p>
+
+<p>bitcoinp will also handle a request of the form '/:platform/:currency' by converting it to /:platform/btc/:currency if :currency is a supported fiat code, or /:platform/btc/usd if :currency is 'btc'</p>
+
+<p>Additionally, the request may take the form '/:platform' if the application developer wants their application to receive the entire API response as received by bitcoinp's API aggregation cron job</p>
+
+<p>Responses will have the following format:</p>
+
+<p><code>mycallback({"${currency}\_to\_$(currency)": ${exchange_rate}, "timestamp": ${timestamp}});</code></p>
+
+<h2>
+<a name="examples" class="anchor" href="#examples"><span class="octicon octicon-link"></span></a>Examples:</h2>
+
+<p>request:<br><code>GET /coinbase/btc/usd?callback=myfunction</code><br>
+response:<br><code>myfunction{"btc_to_usd": 598.0746, "timestamp": 1403938400.415413}</code></p>
+
+<p>request:<br><code>GET /coinbase/cad/usd</code><br>
+response:<br><code>{"timestamp": 1403942407.8936901, "cad_to_usd": 0.915344}</code></p>
+
+<p><em>// only coinbase can be used as the platform for converting between fiat:</em><br>
+request:<br><code>GET /btc-e/cad/usd</code><br>
+response:<br><code>error code: 400</code>  </p>
+
+<p><em>// returns the btc rate against usd even though VoS delivers rate data against cad by default</em><br>
+request:<br><code>GET /vaultofsatoshi/btc</code> or <code>GET /vaultofsatoshi/usd</code><br>
+response:<br><code>{"timestamp": 1404077352.836355, "btc_to_usd": 576.66672}</code></p>
+
+<p><em>// returns the unprocessed response for the platform's api call if only the platform is provided</em><br>
+request:<br><code>GET /bitstamp</code><br>
+response:<br><code>{"volume": "6968.11004501", "last": "594.85", "timestamp": "1403942936", "bid": "594.24", "vwap": "588.39", "high": "600.00", "low": "575.00", "ask": "594.85"}</code></p>
+
+<h2>
+<a name="supported-currency-abbreviations" class="anchor" href="#supported-currency-abbreviations"><span class="octicon octicon-link"></span></a>Supported currency abbreviations:</h2>
+
+<p>Currency abbreviations use ISO 4217 currency codes. See <a href="http://en.wikipedia.org/wiki/ISO_currency_code">wikipedia.org/ISO_currency_code</a> for more details.
+['aed', 'afn', 'all', 'amd', 'ang', 'aoa', 'ars', 'aud', 'awg', 'azn', 'bam', 'bbd', 'bdt', 'bgn', 'bhd', 'bif', 'bmd', 'bnd', 'bob', 'brl', 'bsd', 'btn', 'bwp', 'byr', 'bzd', 'cad', 'cdf', 'chf', 'clp', 'cny', 'cop', 'crc', 'cup', 'cve', 'czk', 'djf', 'dkk', 'dop', 'dzd', 'eek', 'egp', 'ern', 'etb', 'eur', 'fjd', 'fkp', 'gbp', 'gel', 'ghs', 'gip', 'gmd', 'gnf', 'gtq', 'gyd', 'hkd', 'hnl', 'hrk', 'htg', 'huf', 'idr', 'ils', 'inr', 'iqd', 'irr', 'isk', 'jmd', 'jod', 'jpy', 'kes', 'kgs', 'khr', 'kmf', 'kpw', 'krw', 'kwd', 'kyd', 'kzt', 'lak', 'lbp', 'lkr', 'lrd', 'lsl', 'ltl', 'lvl', 'lyd', 'mad', 'mdl', 'mga', 'mkd', 'mmk', 'mnt', 'mop', 'mro', 'mur', 'mvr', 'mwk', 'mxn', 'myr', 'mzn', 'nad', 'ngn', 'nio', 'nok', 'npr', 'nzd', 'omr', 'pab', 'pen', 'pgk', 'php', 'pkr', 'pln', 'pyg', 'qar', 'ron', 'rsd', 'rub', 'rwf', 'sar', 'sbd', 'scr', 'sdg', 'sek', 'sgd', 'shp', 'sll', 'sos', 'srd', 'std', 'svc', 'syp', 'szl', 'thb', 'tim', 'tjs', 'tmm', 'tnd', 'top', 'try', 'ttd', 'twd', 'tzs', 'uah', 'ugx', 'usd', 'uyu', 'uzs', 'vef', 'vnd', 'vuv', 'wst', 'xaf', 'xcd', 'xof', 'xpf', 'yer', 'zar', 'zmk', 'zwl']</p>
+      </section>
+      <footer>
+        <p><small>Hosted on <a href="http://pages.github.com">GitHub Pages</a> using the Dinky theme</small></p>
+      </footer>
+    </div>
+    <!--[if !IE]><script>fixScale(document);</script><![endif]-->
+		          <script type="text/javascript">
+            var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+            document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+          </script>
+          <script type="text/javascript">
+            try {
+              var pageTracker = _gat._getTracker("UA-44204614-1");
+            pageTracker._trackPageview();
+            } catch(err) {}
+          </script>
+
+  </body>
+</html>
