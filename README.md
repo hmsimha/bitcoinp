@@ -1,5 +1,7 @@
 app live at [http://bitcoin-p.appspot.com](http://bitcoin-p.appspot.com) and (nearly) ready for production use
 
+View this project's [github page](http://hmsimha.github.io/bitcoinp) for description and better demos.
+
 #Bitcoin with padding
 **JSONP-enabled bitcoin conversion**
 
