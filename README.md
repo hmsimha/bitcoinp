@@ -53,7 +53,7 @@ Additionally, the request may take the form '/:platform' if the application deve
 
 Responses will have the following format:
 
-`mycallback({"${currency}\_to\_$(currency)": ${exchange_rate}, "timestamp": ${timestamp}});`
+`mycallback({"${currency}_to_$(currency)": ${exchange_rate}, "timestamp": ${timestamp}});`
 
 Examples:
 ---
