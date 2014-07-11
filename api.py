@@ -75,6 +75,8 @@ class API(webapp2.RequestHandler):
     #break up path into platform, base, and quote
     #if only one path segment, expand to two by assuming base=btc, quote=usd
     splitpath = [x for x in self.request.path.lower().split('/') if x]
+    if len(splitpath) == 1:
+      splitpath = [splitpath[0], None, None]
     if len(splitpath) == 2:
       if splitpath[1] == 'btc':
         splitpath.append('usd')
@@ -96,12 +98,15 @@ class API(webapp2.RequestHandler):
     self.response.headers["Content-Type"] = "application/json"
     smartpath = self.smartpath()
     platform = self.platform = smartpath[0]
-    if platform not in PLATFORMS or len(smartpath) != 3:
-      self.abort(404)
     # get currency pair as base and quote ('quote' is preferred to 'counter')
     # see http://en.wikipedia.org/wiki/Currency_pair
     base = self.base = smartpath[1]
     quote = self.quote = smartpath[2]
+    if platform not in PLATFORMS or len(smartpath) != 3:
+      self.abort(404)
+    if None in smartpath:
+      self.response.write(memcache.get(platform))
+      return
     # create set of supported ISO 4217 currency codes
     # see README for more information
     fiatkeys = {str(y[0:3]) for y in memcache.get('coinbase')

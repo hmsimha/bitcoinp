@@ -61,30 +61,30 @@ Examples:
 ---
 
 request:  
-`GET /coinbase/btc/usd?callback=myfunction`  
+`GET [/coinbase/btc/usd?callback=myfunction]` [(Try it out!)](http://bitcoin-p.appspot.com/coinbase/btc/usd?callback=myfunction)  
 response:  
 `myfunction({"btc_to_usd": 598.0746, "timestamp": 1403938400.415413})`
 
 request:  
-`GET /coinbase/cad/usd`  
+`GET /coinbase/cad/usd` [(Try it out!)](http://bitcoin-p.appspot.com/coinbase/cad/usd)  
 response:  
 `{"timestamp": 1403942407.8936901, "cad_to_usd": 0.915344}`
 
 *// only coinbase can be used as the platform for converting between fiat:*  
 request:  
-`GET /btc-e/cad/usd`  
+`GET /btc-e/cad/usd` [(Try it out!)](http://bitcoin-p.appspot.com/btc-e/cad/usd)  
 response:  
 `error code: 400`  
 
 *// returns the btc rate against usd even though VoS delivers rate data against cad by default*  
 request:  
-`GET /vaultofsatoshi/btc` or `GET /vaultofsatoshi/usd`  
+`GET /vaultofsatoshi/btc` or `GET /vaultofsatoshi/usd` [(Try it out!)](http://bitcoin-p.appspot.com/vaultofsatoshi/btc)   
 response:  
 `{"timestamp": 1404077352.836355, "btc_to_usd": 576.66672}`
 
 *// returns the unprocessed response for the platform's api call if only the platform is provided*  
 request:  
-`GET /bitstamp`  
+`GET /bitstamp` [(Try it out!)](http://bitcoin-p.appspot.com/bitstamp)  
 response:   
 `{"volume": "6968.11004501", "last": "594.85", "timestamp": "1403942936", "bid": "594.24", "vwap": "588.39", "high": "600.00", "low": "575.00", "ask": "594.85"}`
 
