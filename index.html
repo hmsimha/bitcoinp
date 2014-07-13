@@ -94,22 +94,22 @@ function convert(response)
 <h2>
 <a name="examples" class="anchor" href="#examples"><span class="octicon octicon-link"></span></a>Examples:</h2>
 
-<p>request:<br><code>GET /coinbase/btc/usd?callback=myfunction</code><a href="http://bitcoin-p.appspot.com/coinbase/btc/usd?callback=myfunction"><sup>Try it out</sup></a><br>
+<p>request:<br><code>GET /coinbase/btc/usd?callback=myfunction</code><a href="http://bitcoin-p.appspot.com/coinbase/btc/usd?callback=myfunction"><sup>try it out</sup></a><br>
 response:<br><code>myfunction({"btc_to_usd": 598.0746, "timestamp": 1403938400.415413});</code></p>
 
-<p>request:<br><code>GET /coinbase/cad/usd</code><a href="http://bitcoin-p.appspot.com/coinbase/cad/usd"><sup>Try it out</sup></a><br>
+<p>request:<br><code>GET /coinbase/cad/usd</code><a href="http://bitcoin-p.appspot.com/coinbase/cad/usd"><sup>try it out</sup></a><br>
 response:<br><code>{"timestamp": 1403942407.8936901, "cad_to_usd": 0.915344}</code></p>
 
 <p><em>// only coinbase can be used as the platform for converting between fiat:</em><br>
-request:<br><code>GET /btc-e/cad/usd</code><a href="http://bitcoin-p.appspot.com/btc-e/cad/usd"><sup>Try it out</sup></a><br>
+request:<br><code>GET /btc-e/cad/usd</code><a href="http://bitcoin-p.appspot.com/btc-e/cad/usd"><sup>try it out</sup></a><br>
 response:<br><code>error code: 400</code>  </p>
 
 <p><em>// returns the btc rate against usd even though VoS delivers rate data against cad by default</em><br>
-request:<br><code>GET /vaultofsatoshi/btc</code> or <code>GET /vaultofsatoshi/usd</code><a href="http://bitcoin-p.appspot.com/vaultofsatoshi/btc"><sup>Try it out</sup></a><br>
+request:<br><code>GET /vaultofsatoshi/btc</code> or <code>GET /vaultofsatoshi/usd</code><a href="http://bitcoin-p.appspot.com/vaultofsatoshi/btc"><sup>try it out</sup></a><br>
 response:<br><code>{"timestamp": 1404077352.836355, "btc_to_usd": 576.66672}</code></p>
 
 <p><em>// returns the unprocessed response for the platform's api call if only the platform is provided</em><br>
-request:<br><code>GET /bitstamp</code><a href="http://bitcoin-p.appspot.com/bitstamp"><sup>Try it out</sup></a><br>
+request:<br><code>GET /bitstamp</code><a href="http://bitcoin-p.appspot.com/bitstamp"><sup>try it out</sup></a><br>
 response:<br><code>{"volume": "6968.11004501", "last": "594.85", "timestamp": "1403942936", "bid": "594.24", "vwap": "588.39", "high": "600.00", "low": "575.00", "ask": "594.85"}</code></p>
 
 <h2>
